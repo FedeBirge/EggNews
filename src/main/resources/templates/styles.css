@@ -1,0 +1,58 @@
+ /* el encabezado H1 tiene que tener una fuente a elección y estar centrado,
+ lo mismo para el encabezado H2,
+ y por ultimo los párrafos deben tener una fuente a elección,
+ deben tener un color a elección y deben estar centrados a la izquierda */
+
+ body {
+     /* background-color: blueviolet; */
+     font-family: sans-serif;
+ }
+
+ h1 {
+     text-align: center;
+     font-size: 50px;
+     font-family: 'Bruno Ace SC', cursive;
+     color: rgb(32, 104, 63);
+
+ }
+
+ h2 {
+     text-align: center;
+     font-size: 40px;
+     font-family: cursive;
+     color: rgb(220, 227, 91);
+ }
+
+ p {
+     text-align: left;
+     font-size: 20px;
+     font-family: cursive;
+     color: rgb(162, 230, 158);
+ }
+
+ /* Definir las reglas CSS que permiten mostrar los enlaces con los siguientes estilos:
+   • En su estado normal,
+  los enlaces se muestran de color rojo #CC0000. 
+  • Cuando el usuario pasa su ratón sobre el enlace,
+  se muestra con un color de fondo rojo #CC0000 y la letra de color blanco #FFF. 
+  • Los enlaces visitados se muestran en color gris claro #CCC. */
+ /* link sin visitar */
+ a:link {
+     color: #CC0000;
+ }
+
+ /* link visitado*/
+ a:visited {
+     color: #CCC;
+ }
+
+ /* mouse sobre el link*/
+ a:hover {
+     color: #FFF;
+     background-color: #CC0000;
+ }
+
+ /* link clickeado */
+ a:active {
+     color: #CCC;
+ }

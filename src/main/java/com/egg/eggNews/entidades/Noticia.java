@@ -1,8 +1,11 @@
 
 package com.egg.eggNews.entidades;
 
+import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 /**
@@ -10,9 +13,12 @@ import javax.persistence.Id;
  * @author feder
  */
 @Entity
-public class Noticia {
+@Table(name = "noticias")
+public class Noticia implements Serializable {
     @Id
+    @Column(name = "titulo")
     private String titulo;
+    @Column(name = "cuerpo")
     private String cuerpo;
 
     public Noticia() {
