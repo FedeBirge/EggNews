@@ -1,0 +1,27 @@
+
+ body {
+    background-image: url("/img/FondoZoom_2.jpg");
+    background-size: cover;
+    display: flex;
+    justify-content: left;
+  
+}
+  form {
+        width: 55%;
+        height: 70px;
+        
+  }
+ .tit {
+       color: #37474f;
+          background-color: #ffcb00;
+         margin: auto;        
+        text-align:center;
+            font-weight: 700;
+ }
+ .volver {
+  display: flex;
+  justify-content: center;
+}
+
+
+ 
