@@ -3,6 +3,8 @@ package com.egg.eggNews.controladores;
 
 import com.egg.eggNews.excepciones.MyException;
 import com.egg.eggNews.servicios.NoticiaService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +29,14 @@ public class NoticiaControlador {
         return "noti_form.html";
     }
     @PostMapping("/registro") //localhost:8080/noticia/registro
-    public String registro(@RequestParam String titulo,@RequestParam String cuerpo) throws MyException{
-        notiServ.crearNoticia(titulo, cuerpo);
-        return "noti_form.html";
+    public String registro(@RequestParam String titulo,@RequestParam String cuerpo) {
+        try {
+            notiServ.crearNoticia(titulo, cuerpo);
+        } catch (MyException ex) {
+            Logger.getLogger(NoticiaControlador.class.getName()).log(Level.SEVERE, null, ex);
+            return "noti_form.html";
+        }
+        return "index.html";
     }
     
 }
