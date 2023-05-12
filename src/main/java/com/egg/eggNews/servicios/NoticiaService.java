@@ -3,7 +3,9 @@ package com.egg.eggNews.servicios;
 import com.egg.eggNews.entidades.Noticia;
 import com.egg.eggNews.excepciones.MyException;
 import com.egg.eggNews.repositorios.NoticiaRepositorio;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ public class NoticiaService {
         Noticia noti = new Noticia();
         noti.setTitulo(titulo);
         noti.setCuerpo(cuerpo);
+        noti.setFecha(new Date());
         notiRepo.save(noti);
 
     }
@@ -40,6 +43,9 @@ public class NoticiaService {
         Noticia noti = notiRepo.findById(titulo).get();
 
     }
+    public Noticia getOne(String titulo) throws MyException {
+        return notiRepo.getOne(titulo);
+    }
 
     @Transactional
     public void modificarNoticia(String titulo, String cuerpo) throws MyException {
@@ -51,8 +57,9 @@ public class NoticiaService {
             notiRepo.save(noti);
         }
     }
-
-    public void eliminarNoticia(String titulo) {
+    @Transactional
+    public void eliminarNoticia(String titulo) throws MyException {
+        
         Optional<Noticia> resp = notiRepo.findById(titulo);
         if (resp.isPresent()) {
 
@@ -62,7 +69,7 @@ public class NoticiaService {
 
     }
 
-   private void validar(String titulo, String cuerpo) throws MyException {
+    private void validar(String titulo, String cuerpo) throws MyException {
 
         if (titulo.isEmpty() || titulo == null) {
             throw new MyException("el tiutlo no puede ser nulo o estar vacio");

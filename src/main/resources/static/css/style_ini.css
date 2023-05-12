@@ -1,20 +1,13 @@
 
  body {
     background-image: url("/img/fondo_ini.jpg");
-    background-size: cover;
-    display: flex;
-    justify-content: left;
-  
+    background-size: cover;      
 }
-  form {
-        width: 55%;
-        height: 70px;
-        
-  }
-#boton {
-       display: flex;
+ 
+#bot{
+   display: flex;  
   justify-content: center;
- }
+}
 
 
  

@@ -18,13 +18,13 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "noticias")
-public class Noticia implements Serializable {
+public class Noticia implements Serializable, Comparable<Noticia> {
     @Id
     @Column(name = "titulo")
     private String titulo;
     @Column(name = "cuerpo")
     private String cuerpo;
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
 
     public Noticia() {
@@ -58,6 +58,11 @@ public class Noticia implements Serializable {
 
     public void setCuerpo(String cuerpo) {
         this.cuerpo = cuerpo;
+    }
+
+    @Override
+    public int compareTo(Noticia t) {
+      return t.fecha.compareTo(this.fecha);
     }
     
 }
