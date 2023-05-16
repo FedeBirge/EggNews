@@ -1,13 +1,34 @@
 
- body {
+body {
     background-image: url("/img/fondo_ini.jpg");
-    background-size: cover;      
+    background-size: cover;
 }
- 
+
 #bot{
-   display: flex;  
-  justify-content: center;
+    display: flex;
+    justify-content: center;
+}
+.cont{
+     display: flex;
+     flex-wrap: wrap;  
+     
+   justify-content: left;
+   
+}
+.card{
+    opacity: 0.8;
+     background-color:white;
+   justify-content: space-between;
+   margin-bottom: 20px;
+   margin-right: 20px;
+
+}
+.card-text{
+    text-align:right;
+    opacity: 1;
+}
+.card-body{
+   
+    justify-content: center;
 }
 
-
- 

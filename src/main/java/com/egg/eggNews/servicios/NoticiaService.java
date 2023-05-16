@@ -39,11 +39,18 @@ public class NoticiaService {
         return noticias;
     }
 
-    public void buscarPorTitulo(String titulo) {
-        Noticia noti = notiRepo.findById(titulo).get();
 
+    public Noticia buscarPorTitulo(String titulo) {
+        
+         Optional<Noticia> respuesta = notiRepo.findById(titulo);
+         
+         Noticia noti = respuesta.get();
+       
+         return noti;
+      
     }
-    public Noticia getOne(String titulo) throws MyException {
+    
+    public Noticia getOne(String titulo)  {
         return notiRepo.getOne(titulo);
     }
 

@@ -34,22 +34,7 @@ public class NoticiaControlador {
         return "noti_form.html";
     }
     
-    @GetMapping("/mostrar/{titulo}")
-    public String mostrar(@PathVariable("titulo") String titulo, ModelMap modelo) throws MyException {
-           
-        // getOne con titulo
-        try {
-             System.out.println(notiServ.getOne(titulo));
-            modelo.put("noticia", notiServ.getOne(titulo));
-           
-            return "mostrar.html";
-        } catch (Exception ex) {
-             List<Noticia> noticias = notiServ.listarNoticias();
-        Collections.sort(noticias);
-        modelo.addAttribute("noticias", noticias);
-            return "panelAdmin.html";
-        }
-    }
+   
     @PostMapping("/registro") //localhost:8080/panel/noticia/registro
     public String registro(@RequestParam String titulo,@RequestParam String cuerpo, ModelMap modelo) {
         try {
@@ -61,6 +46,51 @@ public class NoticiaControlador {
             return "noti_form.html";
         }
         
+    }
+     @GetMapping("/mostrar/{titulo}")
+    public String mostrar(@PathVariable("titulo") String titulo, ModelMap modelo) throws MyException {
+           
+        // getOne con titulo
+        try {            
+            modelo.addAttribute("titulo", notiServ.getOne(titulo).getTitulo());
+            modelo.addAttribute("cuerpo", notiServ.getOne(titulo).getCuerpo());
+            return "mostrar.html";
+        } catch (Exception ex) {
+             List<Noticia> noticias = notiServ.listarNoticias();
+             Collections.sort(noticias);
+             modelo.addAttribute("noticias", noticias);
+            return "panelAdmin.html";
+        }
+    }
+    @GetMapping("/modificar/{titulo}")
+    public String modificar(@PathVariable("titulo") String titulo, ModelMap modelo) {
+
+        try {
+            modelo.put("exito", "Noticia eliminada(get) con exito!");
+            return "redirect:/panel/admin";
+        } catch (Exception ex) {
+            modelo.put("error", ex.getMessage());
+            return "redirect:/panel/admin";
+        }
+
+    }
+
+    @PostMapping("/modificar/{titulo}")
+    public String modificar(@PathVariable("titulo") String titulo,@RequestParam String cuerpo, ModelMap modelo) {
+        
+        try {
+            notiServ.eliminarNoticia(notiServ.getOne(titulo).getTitulo());
+            modelo.put("exito", "!Noticia eliminada con exito!");
+            List<Noticia> noticias = notiServ.listarNoticias();
+            Collections.sort(noticias);
+            modelo.addAttribute("noticias", noticias);
+            
+            return "panelAdmin.html";
+        } catch (MyException ex) {
+            modelo.put("error", ex.getMessage());
+            return "redirect:/panel/admin";
+        }
+
     }
     
 }

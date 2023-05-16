@@ -1,0 +1,23 @@
+
+ body {
+    background-image: url("/img/FondoZoom_2.jpg");
+    background-size: cover;      
+}
+  .bot{
+         display: flex;
+    justify-content: right;
+  }
+  .noticia {
+        width: 55%;
+        height: 70px;
+         justify-content: left;
+        text-align: justify;
+  }
+
+ .volver {
+  display: flex;
+  justify-content: center;
+}
+
+
+ 
