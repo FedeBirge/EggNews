@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 /**
  *
@@ -38,8 +38,8 @@ public class PanelControlador {
         return "panelAdmin.html";
     }
 
-    @GetMapping("/eliminar/{titulo}")
-    public String eliminar(@PathVariable("titulo") String titulo, ModelMap modelo) {
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable("id") String id, ModelMap modelo) {
 
         try {
             modelo.put("exito", "Noticia eliminada(get) con exito!");
@@ -51,11 +51,11 @@ public class PanelControlador {
 
     }
 
-    @PostMapping("/eliminar/{titulo}")
-    public String eliminar1(@PathVariable("titulo") String titulo, ModelMap modelo) {
+    @PostMapping("/eliminar/{id}")
+    public String eliminar1(@PathVariable("id") String id, ModelMap modelo) {
         
         try {
-            notiServ.eliminarNoticia(notiServ.getOne(titulo).getTitulo());
+            notiServ.eliminarNoticia(notiServ.getOne(id).getId());
             modelo.put("exito", "!Noticia eliminada con exito!");
             List<Noticia> noticias = notiServ.listarNoticias();
             Collections.sort(noticias);

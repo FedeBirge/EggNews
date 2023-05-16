@@ -17,17 +17,17 @@
 
     <body>   
 
-        <form action="/noticia/registro" method="POST">
+        <form th:action="@{/noticia/registro}" method="POST">
             <div class="tit">
                 <h4>Nueva Noticia</h4>    
             </div>
             <div class="mb-3">
                 <label for="exampleTitulo" class="form-label">Titulo</label>
-                <input type="text" class="form-control" name="titulo" id="fonts" placeholder="Ingrese el titulo">
+                <input  type="text" class="form-control" name="titulo" id="fonts" placeholder="Ingrese el titulo">
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlTextarea1" class="form-label">Desarrollo</label>
-                <textarea class="form-control" name="cuerpo" id="exampleFormControlTextarea1" rows="4"></textarea>
+                <textarea  class="form-control" name="cuerpo" id="exampleFormControlTextarea1" rows="4"></textarea>
             </div >
             <div th:if="${error} != null" class=" card text-white bg-danger mb-3 mensajeError">
                 <div class="card-body">

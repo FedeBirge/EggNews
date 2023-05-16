@@ -22,7 +22,7 @@
 
         <br>
         <br>
-        
+        <div>
         <table class="table table-Light table-striped">
             <thead>
                 <tr>
@@ -32,17 +32,17 @@
 
                 </tr>
             </thead>
-            <tbody th:each="noticia:${noticias}">
+            <tbody th:each="noticia : ${noticias}">
                 <tr>
                     <th th:text="${noticia.titulo}"></th>
-                    <td><form th:action="@{/panel/eliminar/__${noticia.titulo}__}" method="post">
-                            <button class="btn btn-warning me-md-2"  type="summit" method="POST">Modificar</button>
+                    <td>
+                            <a th:href ="@{/noticia/modificar/__${noticia.id}__}" class="btn btn-warning me-md-2"  >Modificar</a>
                            
-                    </form>
+                   
                     </td> 
                     
                     <td>
-                        <form th:action="@{/panel/eliminar/__${noticia.titulo}__}" method="POST"> 
+                        <form th:action="@{/panel/eliminar/__${noticia.id}__}" method="POST"> 
                         <button class="btn btn-warning me-md-2"  type="summit">Eliminar</button></td>
                         </form>
                 </tr>
@@ -61,13 +61,13 @@
             </div>
         </div>
         </table>
-        
-
+        </div>
+  <div>
         <div class="volver">
             <a class="btn btn-warning me-md-2" th:href="@{/}" type="button">Volver</a>
 
         </div>
-
+  </div>
 
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"
                 integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE"

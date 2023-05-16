@@ -2,12 +2,13 @@
  body {
     background-image: url("/img/FondoPanel.jpg");
     background-size: cover;   
+
  }
 .table{
     width: 55%;
 }
  .volver {
-  display: flex;
+      display: flex;
   justify-content: center;
 }
 .titulo {
@@ -16,6 +17,7 @@
 .acc {
   text-align: right;
 }
+
 
 /* .tit {
        color: #37474f;

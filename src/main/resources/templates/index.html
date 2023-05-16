@@ -28,7 +28,7 @@
                     <p class="card-text" th:text="${noticia.fecha}"></p>
                     <h5 class="card-title"  th:text="${noticia.titulo}"></h5>
                   
-                    <a th:href ="@{/noticia/mostrar/__${noticia.titulo}__}" class="btn btn-warning">Leer</a>
+                    <a th:href ="@{/noticia/mostrar/__${noticia.id}__}" class="btn btn-warning">Leer</a>
                 </div>
             </div>
         </div>

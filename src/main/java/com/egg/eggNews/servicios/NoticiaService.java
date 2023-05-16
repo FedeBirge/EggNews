@@ -43,33 +43,32 @@ public class NoticiaService {
     public Noticia buscarPorTitulo(String titulo) {
         
          Optional<Noticia> respuesta = notiRepo.findById(titulo);
-         
-         Noticia noti = respuesta.get();
-       
+          Noticia noti = respuesta.get();
          return noti;
       
     }
     
-    public Noticia getOne(String titulo)  {
-        return notiRepo.getOne(titulo);
+    public Noticia getOne(String id)  {
+        return notiRepo.getOne(id);
     }
 
     @Transactional
-    public void modificarNoticia(String titulo, String cuerpo) throws MyException {
+    public void modificarNoticia(String id,String titulo, String cuerpo) throws MyException {
+        System.out.println("Entro a modificar noticia?");
         validar(titulo, cuerpo);
-        Optional<Noticia> respuesta = notiRepo.findById(titulo);
+        Optional<Noticia> respuesta = notiRepo.findById(id);
         if (respuesta.isPresent()) {
             Noticia noti = respuesta.get();
+            noti.setTitulo(titulo);
             noti.setCuerpo(cuerpo);
             notiRepo.save(noti);
         }
     }
     @Transactional
-    public void eliminarNoticia(String titulo) throws MyException {
+    public void eliminarNoticia(String id) throws MyException {
         
-        Optional<Noticia> resp = notiRepo.findById(titulo);
+        Optional<Noticia> resp = notiRepo.findById(id);
         if (resp.isPresent()) {
-
             notiRepo.delete(resp.get());
 
         }
