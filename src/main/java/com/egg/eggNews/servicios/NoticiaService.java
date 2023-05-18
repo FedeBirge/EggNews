@@ -5,6 +5,7 @@ import com.egg.eggNews.excepciones.MyException;
 import com.egg.eggNews.repositorios.NoticiaRepositorio;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +37,7 @@ public class NoticiaService {
     public List<Noticia> listarNoticias() {
         List<Noticia> noticias = new ArrayList();
         noticias = notiRepo.findAll();
+        Collections.sort(noticias);
         return noticias;
     }
 

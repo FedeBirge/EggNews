@@ -17,53 +17,42 @@
 
     <body>   
 
-
+        
         <form th:action="@{/noticia/modificar/__${noticia.id}__}" method="POST">
             <div class="tit">
                 <h4>Modificar Noticia</h4>    
-                <input hidden th:value="${noticia.id}" name="id">
+                <input hidden th:value="${id}" name="id">
             </div>
             <div class="mb-3">
                 <label for="exampleTitulo" class="form-label">Modificar Titulo</label>
                 <input th:value="${noticia.titulo}" type="text" class="form-control" name="titulo" id="fonts"></input>
+                
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlTextarea1" class="form-label">Modificar el desarrollo</label>
                 <textarea th:text="${noticia.cuerpo}" type="text"class="form-control" name="cuerpo" id="exampleFormControlTextarea1" rows="7"></textarea>
             </div >
-            <div th:if="${error} != null" class=" card text-white bg-danger mb-3 mensajeError">
-                <div class="card-body">
-                    <h5 class="card-title">¡Error!</h5>
-                    <p class="card-text" th:text="${error}"></p>
-                </div>
+           <div th:if="${exito} != null" class=" card text-white bg-success mb-3 mt-3 mensajeExito">
+            <div class="card-body">
+                <h5 class="card-title">¡Exito!</h5>
+                <p class="card-text" th:text="${exito}"></p>
             </div>
-            <div th:if="${exito} != null" class=" card text-white bg-success mb-3 mt-3 mensajeExito">
-                <div class="card-body">
-                    <h5 class="card-title">¡Exito!</h5>
-                    <p class="card-text" th:text="${exito}"></p>
-                </div>
-            </div>   
-            <div th:if="${error} != null" class=" card text-white bg-danger mb-3 mensajeError">
-                <div class="card-body">
-                    <h5 class="card-title">¡Error!</h5>
-                    <p class="card-text" th:text="${error}"></p>
-                </div>
+        </div>   
+        <div th:if="${error} != null" class=" card text-white bg-danger mb-3 mensajeError">
+            <div class="card-body">
+                <h5 class="card-title">¡Error!</h5>
+                <p class="card-text" th:text="${error}"></p>
             </div>
-            <div th:if="${exito} != null" class=" card text-white bg-success mb-3 mt-3 mensajeExito">
-                <div class="card-body">
-                    <h5 class="card-title">¡Exito!</h5>
-                    <p class="card-text" th:text="${exito}"></p>
-                </div>
-            </div>  
+        </div>
 
             <button type="submit" class="btn btn-warning">Modificar Noticia</button>
-
+            
             <div class="volver">
                 <a class="btn btn-warning me-md-2" th:href="@{/panel/admin}" type="button">Volver</a>
 
             </div>
         </form>
-
+     
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"
                 integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE"
         crossorigin="anonymous"></script>

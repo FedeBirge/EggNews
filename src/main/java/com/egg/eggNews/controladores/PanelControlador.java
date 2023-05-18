@@ -32,7 +32,7 @@ public class PanelControlador {
     @GetMapping("/admin")
     public String panel(ModelMap modelo) {
         List<Noticia> noticias = notiServ.listarNoticias();
-        Collections.sort(noticias);
+        
         modelo.addAttribute("noticias", noticias);
 
         return "panelAdmin.html";
@@ -58,11 +58,13 @@ public class PanelControlador {
             notiServ.eliminarNoticia(notiServ.getOne(id).getId());
             modelo.put("exito", "!Noticia eliminada con exito!");
             List<Noticia> noticias = notiServ.listarNoticias();
-            Collections.sort(noticias);
+           
             modelo.addAttribute("noticias", noticias);
             
             return "panelAdmin.html";
         } catch (MyException ex) {
+            
+         
             modelo.put("error", ex.getMessage());
             return "redirect:/panel/admin";
         }

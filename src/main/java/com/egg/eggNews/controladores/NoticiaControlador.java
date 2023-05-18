@@ -24,7 +24,7 @@ public class NoticiaControlador {
 
     @Autowired
     private NoticiaService notiServ;
-
+    
     @GetMapping("/registrar") //localhost:8080/panel/noticia/registrar
     public String cargar() {
         return "noti_form.html";
@@ -35,18 +35,15 @@ public class NoticiaControlador {
         try {
             notiServ.crearNoticia(titulo, cuerpo);
             modelo.put("exito", "Noticia cargada con exito!");
-            List<Noticia> noticias = notiServ.listarNoticias();
-            Collections.sort(noticias);
+            List<Noticia> noticias = notiServ.listarNoticias();            
             modelo.addAttribute("noticias", noticias);
             return "noti_form.html";
         } catch (MyException ex) {
             modelo.put("error", ex.getMessage());
-            List<Noticia> noticias = notiServ.listarNoticias();
-            Collections.sort(noticias);
+            List<Noticia> noticias = notiServ.listarNoticias();            
             modelo.addAttribute("noticias", noticias);
             return "noti_form.html";
         }
-
     }
 
     @GetMapping("/mostrar/{id}")
@@ -58,8 +55,7 @@ public class NoticiaControlador {
             modelo.addAttribute("cuerpo", notiServ.getOne(id).getCuerpo());
             return "mostrar.html";
         } catch (Exception ex) {
-            List<Noticia> noticias = notiServ.listarNoticias();
-            Collections.sort(noticias);
+            List<Noticia> noticias = notiServ.listarNoticias();            
             modelo.addAttribute("noticias", noticias);
             return "panelAdmin.html";
         }
@@ -70,11 +66,11 @@ public class NoticiaControlador {
 
         try {
             modelo.put("noticia", notiServ.getOne(id));
-
+             modelo.addAttribute("id", notiServ.getOne(id).getId());
             return "modificar.html";
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
-            return "redirect:/panel/admin";
+            return "modificar";
         }
 
     }
@@ -85,17 +81,15 @@ public class NoticiaControlador {
         try {
 
             notiServ.modificarNoticia(id, titulo, cuerpo);
-            modelo.put("exito", "!Noticia modificada con exito!");
-            List<Noticia> noticias = notiServ.listarNoticias();
-            Collections.sort(noticias);
+            modelo.put("exito", "!Noticia modificada con exito!");            
+            List<Noticia> noticias = notiServ.listarNoticias();            
             modelo.addAttribute("noticias", noticias);
-            return "panelAdmin.html";
+            return this.modificar(id, modelo);
         } catch (MyException ex) {
             modelo.put("error", ex.getMessage());
-            List<Noticia> noticias = notiServ.listarNoticias();
-            Collections.sort(noticias);
+            List<Noticia> noticias = notiServ.listarNoticias();           
             modelo.addAttribute("noticias", noticias);
-            return "panelAdmin.html";
+            return this.modificar(id, modelo);
         }
 
     }

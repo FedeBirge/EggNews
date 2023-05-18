@@ -17,6 +17,7 @@
          margin: auto;        
         text-align:center;
             font-weight: 700;
+            border-radius: 5px;
  }
  .volver {
   display: flex;

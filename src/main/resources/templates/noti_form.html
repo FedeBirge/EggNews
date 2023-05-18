@@ -16,7 +16,7 @@
     </head>
 
     <body>   
-
+        
         <form th:action="@{/noticia/registro}" method="POST">
             <div class="tit">
                 <h4>Nueva Noticia</h4>    
@@ -27,7 +27,8 @@
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlTextarea1" class="form-label">Desarrollo</label>
-                <textarea  class="form-control" name="cuerpo" id="exampleFormControlTextarea1" rows="4"></textarea>
+                <textarea  class="form-control" name="cuerpo" 
+                id="exampleFormControlTextarea1" rows="4"></textarea>
             </div >
             <div th:if="${error} != null" class=" card text-white bg-danger mb-3 mensajeError">
                 <div class="card-body">
@@ -35,20 +36,15 @@
                     <p class="card-text" th:text="${error}"></p>
                 </div>
             </div>
-            <div th:if="${exito} != null" class=" card text-white bg-success mb-3 mt-3 mensajeExito">
+            <div th:if="${exito} != null" class=" -3 mcard text-white bg-success mb-3 mtensajeExito">
                 <div class="card-body">
                     <h5 class="card-title">¡Exito!</h5>
                     <p class="card-text" th:text="${exito}"></p>
                 </div>
             </div>   
-
-
-
             <button type="submit" class="btn btn-warning">Cargar Noticia</button>
-
             <div class="volver">
                 <a class="btn btn-warning me-md-2" th:href="@{/panel/admin}" type="button">Volver</a>
-
             </div>
         </form>
 
