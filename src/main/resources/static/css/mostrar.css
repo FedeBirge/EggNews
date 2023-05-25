@@ -13,7 +13,14 @@
          justify-content: left;
         text-align: justify;
   }
-
+  .btn btn-warning mt-3 botones{
+     display: flex;
+    justify-content: right;
+  }
+  .logo{
+      width: 55%;
+        height: 55%;
+  }
  .volver {
   display: flex;
   justify-content: center;

@@ -14,33 +14,7 @@
     </head>
 
     <body>
-       <nav class="navbar navbar-expand-lg navBar">
-            <div class="containerImg">
-                <a href="/" class="navbar-brand d-flex align-items-center">
-                    <img class="logo" src="/img/Egg.png" alt="Img logo egg">
-                </a>
-            </div>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse elementosNav" id="navbarNavDropdown">
-                <ul class="navbar-nav ms-auto elementos">
-                    <li class="nav-item">
-                        <a class="btn btn-warning" th:if="${session.usuariosession == null}" th:href="@{/registrar} " id="navbarDropdown" role="button" aria-expanded="false">
-                            Registrate!
-                        </a>
-
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-warning " th:if="${session.usuariosession == null}" href="/login" id="navbarDropdown" role="button" aria-expanded="false">
-                            Log in
-                        </a>
-
-                    </li>
-                </ul>
-            </div>
-        </nav>
-           <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError" >
+         <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError" >
             <div class="card-body">
                 <h5 class="card-title">Error!</h5>
                 <p class="card-text" th:text="${error}"></p>
@@ -52,7 +26,21 @@
                 <p class="card-text" th:text="${exito}"></p>
             </div>
         </div>
-        
+
+        <div id="bot" >
+            <a type="text" class="btn btn-warning me-md-2" th:href="@{/panel/admin}" >Administrar Noticias</a>
+            <a type="text" class="btn btn-warning" th:href="@{/logout}"  >Cerrar Sesión</a>
+        </div >
+        <div class="cont">
+            <div class="card" th:each="noticia:${noticias}" style="width: 18rem;">
+                <div class="card-body">
+                    <p class="card-text" th:text="${noticia.fecha}"></p>
+                    <h5 class="card-title"  th:text="${noticia.titulo}"></h5>
+                  
+                    <a th:href ="@{/noticia/mostrar/__${noticia.id}__}" class="btn btn-warning">Leer</a>
+                </div>
+            </div>
+        </div>
 
 
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"

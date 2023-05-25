@@ -6,6 +6,7 @@ package com.egg.eggNews.servicios;
 
 import com.egg.eggNews.entidades.Usuario;
 import com.egg.eggNews.enumeraciones.Rol;
+import com.egg.eggNews.excepciones.MyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import com.egg.eggNews.repositorios.UsuarioRepositorio;
@@ -18,23 +19,26 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author feder
  */
+@Service
 public class UsuarioService implements UserDetailsService {
 
     @Autowired
     private UsuarioRepositorio usuarioRepo;
 
     @Transactional
-    public void registrarUsuario(String nombre, String email, String password, String password2) throws Exception {
+    public void registrarUsuario(String nombre, String email, String password, String password2) throws MyException {
         validar(nombre, email, password, password2);
         Usuario usuario = new Usuario();
         usuario.setNombre(nombre);
         usuario.setEmail(email);
-        usuario.setPassword(password);
+        usuario.setPassword(new BCryptPasswordEncoder().encode(password));
         usuario.setFecha(new Date());
         usuario.setActivo(true);
         usuario.setRol(Rol.USER);
@@ -42,24 +46,24 @@ public class UsuarioService implements UserDetailsService {
 
     }
 
-    private void validar(String nombre, String email, String password, String password2) throws Exception {
+    private void validar(String nombre, String email, String password, String password2) throws MyException {
         if (nombre == null || nombre.isEmpty()) {
-            throw new Exception("Debe ingresar un nombre");
+            throw new MyException("Debe ingresar un nombre");
         }
         if (email == null || email.isEmpty()) {
-            throw new Exception("Debe ingresar un email");
+            throw new MyException("Debe ingresar un email");
         }
         if (password == null || password.isEmpty() || password.length() < 6) {
-            throw new Exception("Debe ingresar una contraseña");
+            throw new MyException("Debe ingresar una contraseña válida");
         }
         if (password2 == null || password2.isEmpty() || password2.length() < 6) {
-            throw new Exception("Debe ingresar una contraseña");
+            throw new MyException("Debe ingresar una contraseña");
         }
         if (!password.equals(password2)) {
-            throw new Exception("Las contraseñas no coinciden");
+            throw new MyException("Las contraseñas no coinciden");
         }
         if (usuarioRepo.buscarPorEmail(email) != null) {
-            throw new Exception("Ya existe un usuario con ese email");
+            throw new MyException("Ya existe un usuario con ese email");
         }
     }
 

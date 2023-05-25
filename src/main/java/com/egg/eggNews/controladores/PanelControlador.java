@@ -7,7 +7,7 @@ package com.egg.eggNews.controladores;
 import com.egg.eggNews.entidades.Noticia;
 import com.egg.eggNews.excepciones.MyException;
 import com.egg.eggNews.servicios.NoticiaService;
-import java.util.Collections;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

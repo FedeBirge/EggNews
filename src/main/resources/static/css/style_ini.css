@@ -24,11 +24,19 @@ body {
 
 }
 .card-text{
-    text-align:right;
+    text-align:left;
     opacity: 1;
 }
 .card-body{
    
     justify-content: center;
 }
+.nav-item{
+      margin-bottom: 2px;
+   margin-right: 2px;
+}
+  .logo{
+      width: 55%;
+        height: 55%;
+  }
 
