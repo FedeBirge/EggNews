@@ -1,22 +1,27 @@
 
- body {
+body {
     background-image: url("/img/FondoPanel.jpg");
-    background-size: cover;   
+    background-size: cover;
 
- }
+}
 .table{
     width: 55%;
-    
+
 }
- .volver {
-      display: flex;
-  justify-content: center;
+.bot{
+   text-align: right;
+    margin-bottom: 2px;
+    margin-right: 2px;
+}
+.volver {
+    display: flex;
+    justify-content: center;
 }
 .titulo {
-  text-align: center;
+    text-align: center;
 }
 .acc {
-  text-align: right;
+    text-align: right;
 }
 
 
@@ -31,4 +36,3 @@
 
 
 
- 

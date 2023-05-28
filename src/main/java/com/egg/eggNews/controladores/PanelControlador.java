@@ -28,48 +28,48 @@ public class PanelControlador {
 
     @Autowired
     private NoticiaService notiServ;
+//
+//    @GetMapping("/admin")
+//    public String panel(ModelMap modelo) {
+//        List<Noticia> noticias = notiServ.listarNoticias();
+//        
+//        modelo.addAttribute("noticias", noticias);
+//
+//        return "panelAdmin.html";
+//    }
 
-    @GetMapping("/admin")
-    public String panel(ModelMap modelo) {
-        List<Noticia> noticias = notiServ.listarNoticias();
-        
-        modelo.addAttribute("noticias", noticias);
-
-        return "panelAdmin.html";
-    }
-
-    @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable("id") String id, ModelMap modelo) {
-
-        try {
-            modelo.put("exito", "Noticia eliminada(get) con exito!");
-            return "redirect:/panel/admin";
-        } catch (Exception ex) {
-            modelo.put("error", ex.getMessage());
-            return "redirect:/panel/admin";
-        }
-
-    }
-
-    @PostMapping("/eliminar/{id}")
-    public String eliminar1(@PathVariable("id") String id, ModelMap modelo) {
-        
-        try {
-            notiServ.eliminarNoticia(notiServ.getOne(id).getId());
-            modelo.put("exito", "!Noticia eliminada con exito!");
-            List<Noticia> noticias = notiServ.listarNoticias();
-           
-            modelo.addAttribute("noticias", noticias);
-            
-            return "panelAdmin.html";
-        } catch (MyException ex) {
-            
-         
-            modelo.put("error", ex.getMessage());
-            return "redirect:/panel/admin";
-        }
-
-    }
+//    @GetMapping("/eliminar/{id}")
+//    public String eliminar(@PathVariable("id") String id, ModelMap modelo) {
+//
+//        try {
+//            modelo.put("exito", "Noticia eliminada(get) con exito!");
+//            return "redirect:/panel/admin";
+//        } catch (Exception ex) {
+//            modelo.put("error", ex.getMessage());
+//            return "redirect:/panel/admin";
+//        }
+//
+//    }
+//
+//    @PostMapping("/eliminar/{id}")
+//    public String eliminar1(@PathVariable("id") String id, ModelMap modelo) {
+//        
+//        try {
+//            notiServ.eliminarNoticia(notiServ.getOne(id).getId());
+//            modelo.put("exito", "!Noticia eliminada con exito!");
+//            List<Noticia> noticias = notiServ.listarNoticias();
+//           
+//            modelo.addAttribute("noticias", noticias);
+//            
+//            return "panelAdmin.html";
+//        } catch (MyException ex) {
+//            
+//         
+//            modelo.put("error", ex.getMessage());
+//            return "redirect:/panel/admin";
+//        }
+//
+//    }
     
 
 }

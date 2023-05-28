@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" >
 
     <head>
         <meta charset="UTF-8">
@@ -16,58 +16,60 @@
     </head>
 
     <body>      
-        <div class="btn mb-3 d-md-flex justify-content-md-end">
+        <div class="bot">
+
             <a class="btn btn-warning me-md-2" type="button" th:href="@{/noticia/registrar}">Nueva Noticia</a>
+            <a type="text" class="btn btn-warning" th:href="@{/logout}"  >Cerrar Sesión</a>
         </div>
 
         <br>
         <br>
         <div>
-        <table class="table table-Light table-striped">
-            <thead>
-                <tr>
-                    <th scope="col" class="titulo" >Titular Noticia</th>
+            <table class="table table-Light table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" class="titulo" >Titular Noticia</th>
 
-                    <th scope="col"class="acc">Acciones</th>
+                        <th scope="col"class="acc">Acciones</th>
 
-                </tr>
-            </thead>
-            <tbody th:each="noticia : ${noticias}">
-                <tr>
-                    <th th:text="${noticia.titulo}"></th>
-                    <td>
+                    </tr>
+                </thead>
+                <tbody th:each="noticia : ${noticias}">
+                    <tr>
+                        <th th:text="${noticia.titulo}"></th>
+                        <td>
                             <a th:href ="@{/noticia/modificar/__${noticia.id}__}" class="btn btn-warning me-md-2"  >Modificar</a>
-                           
-                   
-                    </td> 
-                    
-                    <td>
-                        <form th:action="@{/panel/eliminar/__${noticia.id}__}" method="POST"> 
-                        <button class="btn btn-warning me-md-2"  type="summit">Eliminar</button></td>
+
+
+                        </td> 
+
+                        <td>
+                            <form th:action="@{/admin/eliminar/__${noticia.id}__}" method="POST"> 
+                                <button class="btn btn-warning me-md-2"  type="summit">Eliminar</button></td>
                         </form>
-                </tr>
+                    </tr>
 
-            </tbody>
-            <div th:if="${error} != null" class=" card text-white bg-danger mb-3 mensajeError">
-            <div class="card-body">
-                <h5 class="card-title">¡Error!</h5>
-                <p class="card-text" th:text="${error}"></p>
+                </tbody>
+                <div th:if="${error} != null" class=" card text-white bg-danger mb-3 mensajeError">
+                    <div class="card-body">
+                        <h5 class="card-title">¡Error!</h5>
+                        <p class="card-text" th:text="${error}"></p>
+                    </div>
+                </div>
+                <div th:if="${exito} != null" class=" card text-white bg-success mb-3 mt-3 mensajeExito">
+                    <div class="card-body">
+                        <h5 class="card-title">¡Exito!</h5>
+                        <p class="card-text" th:text="${exito}"></p>
+                    </div>
+                </div>
+            </table>
+        </div>
+        <div>
+            <div class="volver">
+                <a class="btn btn-warning me-md-2" th:href="@{/admin/vista}" type="button">Ver News</a>
+
             </div>
         </div>
-        <div th:if="${exito} != null" class=" card text-white bg-success mb-3 mt-3 mensajeExito">
-            <div class="card-body">
-                <h5 class="card-title">¡Exito!</h5>
-                <p class="card-text" th:text="${exito}"></p>
-            </div>
-        </div>
-        </table>
-        </div>
-  <div>
-        <div class="volver">
-            <a class="btn btn-warning me-md-2" th:href="@{/news}" type="button">Volver</a>
-
-        </div>
-  </div>
 
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"
                 integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE"

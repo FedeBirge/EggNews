@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title> noticia </title>
+        <title> Noticia </title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&display=swap" rel="stylesheet">
@@ -15,9 +15,10 @@
     </head>
 
     <body>  
-        <div class="bot" >
-            <a type="text" class="btn btn-warning me-md-2" th:href="@{/panel/admin}" >Administrar Noticias</a>
-            <br>
+         <div id="bot" >
+              <a sec:authorize= "hasRole('ADMIN')" type="text" class="btn btn-warning me-md-2" th:href="@{/admin/dashboard}" >Administrar Noticias</a>
+           
+            <a type="text" class="btn btn-warning" th:href="@{/logout}"  >Cerrar Sesión</a>
         </div >
         <div class="noticia">
 

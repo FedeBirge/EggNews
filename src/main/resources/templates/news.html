@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,7 +28,8 @@
         </div>
 
         <div id="bot" >
-            <a type="text" class="btn btn-warning me-md-2" th:href="@{/panel/admin}" >Administrar Noticias</a>
+              <a sec:authorize= "hasRole('ADMIN')" type="text" class="btn btn-warning me-md-2" th:href="@{/admin/dashboard}" >Administrar Noticias</a>
+           
             <a type="text" class="btn btn-warning" th:href="@{/logout}"  >Cerrar Sesión</a>
         </div >
         <div class="cont">
@@ -37,7 +38,7 @@
                     <p class="card-text" th:text="${noticia.fecha}"></p>
                     <h5 class="card-title"  th:text="${noticia.titulo}"></h5>
                   
-                    <a th:href ="@{/noticia/mostrar/__${noticia.id}__}" class="btn btn-warning">Leer</a>
+                    <a th:if = "@{session.usuariosession} != null" th:href ="@{/noticia/mostrar/__${noticia.id}__}" class="btn btn-warning">Leer</a>
                 </div>
             </div>
         </div>
