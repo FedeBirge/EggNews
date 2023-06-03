@@ -1,6 +1,8 @@
 package com.egg.eggNews.servicios;
 
 import com.egg.eggNews.entidades.Noticia;
+import com.egg.eggNews.entidades.Periodista;
+import com.egg.eggNews.entidades.Usuario;
 import com.egg.eggNews.excepciones.MyException;
 import com.egg.eggNews.repositorios.NoticiaRepositorio;
 import java.util.ArrayList;
@@ -23,12 +25,13 @@ public class NoticiaService {
     private NoticiaRepositorio notiRepo;
 
     @Transactional
-    public void crearNoticia(String titulo, String cuerpo) throws MyException {
-        validar(titulo, cuerpo);
+    public void crearNoticia(String titulo, String cuerpo, Usuario user) throws MyException {
+        validar(titulo, cuerpo, user);
         Noticia noti = new Noticia();
         noti.setTitulo(titulo);
         noti.setCuerpo(cuerpo);
         noti.setFecha(new Date());
+        noti.setCreador(user);
         notiRepo.save(noti);
 
     }
@@ -54,14 +57,15 @@ public class NoticiaService {
     }
 
     @Transactional
-    public void modificarNoticia(String id,String titulo, String cuerpo) throws MyException {
-        System.out.println("Entro a modificar noticia?");
-        validar(titulo, cuerpo);
+    public void modificarNoticia(String id,String titulo, String cuerpo,Usuario user) throws MyException {
+        
+        validar(titulo, cuerpo,user);
         Optional<Noticia> respuesta = notiRepo.findById(id);
         if (respuesta.isPresent()) {
             Noticia noti = respuesta.get();
             noti.setTitulo(titulo);
             noti.setCuerpo(cuerpo);
+//            noti.setCreador(user); no puedo modificar la clave 
             notiRepo.save(noti);
         }
     }
@@ -76,12 +80,15 @@ public class NoticiaService {
 
     }
 
-    private void validar(String titulo, String cuerpo) throws MyException {
+    private void validar(String titulo, String cuerpo, Usuario user) throws MyException {
 
         if (titulo.isEmpty() || titulo == null) {
             throw new MyException("el tiutlo no puede ser nulo o estar vacio");
         }
         if (cuerpo.isEmpty() || cuerpo == null) {
+            throw new MyException("el cuerpo no puede ser nulo o estar vacio");
+        }
+        if ( user == null) {
             throw new MyException("el cuerpo no puede ser nulo o estar vacio");
         }
 

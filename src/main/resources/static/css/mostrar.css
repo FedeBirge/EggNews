@@ -1,30 +1,125 @@
 
- body {
+html, body {
     background-image: url("/img/FondoZoom_2.jpg");
-    background-size: cover;     
-    
+    background-size: cover;
+    margin:5;
+    padding:0;
+    height:100%;
 }
-  #bot{
-         justify-content:right;
+#pagina {
+    position: relative;
+    min-height: 100%;
+}
+#tabla_lista {
+      opacity: 0.8;
+    width: 55%;
+    position: relative;
+     left: 450px;
+}
+#contenido {
+  padding-bottom:50px; /* este valor debe ser igual o mayor al alto del pie */
+}
+#botes{
+  
+}
+  .containerFooter{
+    height:50px;
       display: flex;
+    width: 100%;
+    height: 50px;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+}
+.cuerpo{
+    text-align: justify;
+}
+.noticia{
+    width: 54%;
+    text-align: justify-all;
+}
+#bot{
+
+    justify-content:right;
+    display: flex;
     margin-bottom: 2px;
     margin-right: 2px;
-  }
-  .noticia {
-        width: 55%;
-        height: 70px;
-         justify-content: left;
-        text-align: justify;
-  }
+}
+.logo{
+    width: 35%;
+    height: 35%;
+}
+form {
+    width: 42%;
+    
+    justify-content: left;
 
-  .logo{
-      width: 55%;
-        height: 55%;
-  }
- .volver {
-  display: flex;
-  justify-content: center;
+}
+#form_modif {
+        width: 55%;
+        
+        
+
+}
+ .tit {
+       color: #37474f;
+          background-color: #ffcb00;
+         margin: auto;        
+        text-align:center;
+            font-weight: 700;
+            border-radius: 5px;
+ }
+.volver {
+    display: flex;
+    justify-content: center;
 }
 
 
- 
+.botones{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.form-select{
+    display: flex;
+    width: 42%;
+}
+.nav-link{
+    color: #ffcb00;
+}
+.navBar{
+    display: flex;
+    width: 95%;
+    background-color: #fff !important;
+}
+
+.elementosNav{
+    align-items: end;
+    display: flex;
+    width: 30%;
+    justify-content: space-around;
+    color: #37474f;
+    font-weight: 700;
+}
+
+.header{
+
+    background-size: cover;
+
+    display: flex;
+
+}
+.divVolver {
+    display: flex;
+    justify-content: center;
+}
+
+.contenedorMain{
+    width: 65%;
+    font-size: 180% ;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+

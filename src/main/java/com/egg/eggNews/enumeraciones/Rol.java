@@ -10,5 +10,6 @@ package com.egg.eggNews.enumeraciones;
  */
 public enum Rol {
     USER,
-    ADMIN;
+    ADMIN,
+    JOURNALIST;
 }

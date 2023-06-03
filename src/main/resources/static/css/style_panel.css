@@ -23,7 +23,15 @@ body {
 .acc {
     text-align: right;
 }
+.containerFooter{
+    display: flex;
+    width: 100%;
 
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+}
 
 /* .tit {
        color: #37474f;

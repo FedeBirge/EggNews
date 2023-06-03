@@ -13,7 +13,9 @@ import com.egg.eggNews.repositorios.UsuarioRepositorio;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import javax.servlet.http.HttpSession;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -29,6 +31,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  *
  * @author feder
  */
+@Primary
 @Service
 public class UsuarioService implements UserDetailsService {
 
@@ -36,20 +39,55 @@ public class UsuarioService implements UserDetailsService {
     private UsuarioRepositorio usuarioRepo;
 
     @Transactional
-    public void registrarUsuario(String nombre, String email, String password, String password2) throws MyException {
-        validar(nombre, email, password, password2);
+    public void registrarUsuario(String nombre, String email, String password, String password2, String rol) throws MyException {
+        validar(nombre, email, password, password2, rol);
         Usuario usuario = new Usuario();
         usuario.setNombre(nombre);
         usuario.setEmail(email);
         usuario.setPassword(new BCryptPasswordEncoder().encode(password));
         usuario.setFecha(new Date());
         usuario.setActivo(true);
-        usuario.setRol(Rol.USER);
+        if (rol.equals("ADMIN")) {
+            usuario.setRol(Rol.ADMIN);
+        } else {
+            usuario.setRol(Rol.USER);
+        }
         usuarioRepo.save(usuario);
 
     }
 
-    private void validar(String nombre, String email, String password, String password2) throws MyException {
+    @Transactional
+    public void modificarUsuario(String id, String nombre, String email, String password, String password2, String rol) throws MyException {
+        validar(nombre, email, password, password2, rol);
+        Optional<Usuario> respuesta = usuarioRepo.findById(id);
+        if (respuesta.isPresent()) {
+            Usuario usuario = respuesta.get();
+            usuario.setNombre(nombre);
+            usuario.setEmail(email);
+            usuario.setPassword(new BCryptPasswordEncoder().encode(password));
+            
+            usuario.setActivo(true);
+            if (rol.equals("ADMIN")) {
+                usuario.setRol(Rol.ADMIN);
+            }
+            if (rol.equals("USER")) {
+                usuario.setRol(Rol.USER);
+            }
+            if (rol.equals("JOURNALIST")) {
+                usuario.setRol(Rol.JOURNALIST);
+            }
+            
+                 usuarioRepo.save(usuario);
+            }
+           
+        }
+
+ 
+    public Usuario getOne(String id) {
+        return usuarioRepo.getOne(id);
+    }
+
+    protected void validar(String nombre, String email, String password, String password2, String rol) throws MyException {
         if (nombre == null || nombre.isEmpty()) {
             throw new MyException("Debe ingresar un nombre");
         }
@@ -68,28 +106,36 @@ public class UsuarioService implements UserDetailsService {
         if (usuarioRepo.buscarPorEmail(email) != null) {
             throw new MyException("Ya existe un usuario con ese email");
         }
+        if (rol == null || rol.isEmpty() || rol.equals("Seleccione Rol")) {
+            throw new MyException("Debe ingresar un rol");
+        }
+
     }
 
-    
-    
-    
+    public List<Usuario> listarUsuarios() {
+        List<Usuario> usuarios = new ArrayList();
+        usuarios = usuarioRepo.findAll();
+
+        return usuarios;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepo.buscarPorEmail(email);
         if (usuario != null) {
-           List<GrantedAuthority> permisos = new ArrayList();            
+            List<GrantedAuthority> permisos = new ArrayList();
             GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().toString());
             permisos.add(p);
-             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 
             HttpSession session = attr.getRequest().getSession(true);
 
             session.setAttribute("usuariosession", usuario);
             return new User(usuario.getEmail(), usuario.getPassword(), permisos);
 
-        }
-        else
+        } else {
             return null;
+        }
 
     }
 

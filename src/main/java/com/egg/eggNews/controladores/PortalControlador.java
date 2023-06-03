@@ -2,6 +2,7 @@ package com.egg.eggNews.controladores;
 
 import com.egg.eggNews.entidades.Noticia;
 import com.egg.eggNews.entidades.Usuario;
+import com.egg.eggNews.enumeraciones.Rol;
 import com.egg.eggNews.excepciones.MyException;
 import com.egg.eggNews.servicios.NoticiaService;
 import com.egg.eggNews.servicios.UsuarioService;
@@ -10,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,8 +28,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/")
 public class PortalControlador {
 
-    @Autowired
+    @Autowired 
     private NoticiaService notiServ;
+   
     @Autowired
     private UsuarioService userServ;
 
@@ -66,8 +69,12 @@ public class PortalControlador {
     public String registro(@RequestParam String nombre, @RequestParam String email,
             @RequestParam String password, @RequestParam String password2, ModelMap modelo) {
         try {
-            userServ.registrarUsuario(nombre, email, password, password2);
+           
+            userServ.registrarUsuario(nombre, email, password, password2,"USER");
             modelo.put("exito", "!Usuario registrado correctamente!");
+            List<Noticia> noticias = notiServ.listarNoticias();
+            Collections.sort(noticias);
+            modelo.addAttribute("noticias", noticias);
             return "news.html";
         } catch (MyException ex) {
             modelo.put("error", ex.getMessage());
@@ -77,7 +84,7 @@ public class PortalControlador {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_JOURNALIST')")
     @GetMapping("/news")
     public String news(ModelMap modelo, HttpSession session) {
         try {
