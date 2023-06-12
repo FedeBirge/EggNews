@@ -2,7 +2,7 @@
 html, body {
     background-image: url("/img/FondoZoom_2.jpg");
     background-size: cover;
-    margin:5;
+    margin:5px;
     padding:0;
     height:100%;
 }
@@ -50,13 +50,16 @@ html, body {
     width: 35%;
     height: 35%;
 }
+.formulario{
+    width: 45%;
+}
 form {
     width: 42%;
     
     justify-content: left;
 
 }
-#form_modif {
+#form_modif{
         width: 55%;
         
         
@@ -90,7 +93,7 @@ form {
 }
 .navBar{
     display: flex;
-    width: 95%;
+      width: 98%;
     background-color: #fff !important;
 }
 
@@ -120,6 +123,12 @@ form {
     font-size: 180% ;
     display: flex;
     flex-direction: column;
-    align-items: end;
+     align-items: end;
 }
 
+
+.imagenlogo{
+    width:30px;
+    height:30px;
+     border-radius:150px;
+}

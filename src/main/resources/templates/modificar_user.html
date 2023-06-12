@@ -9,7 +9,14 @@
         <div class="pagina">
 
             <div  id="contenido">
-                <div th:if="${exito} != null" class=" card text-white bg-success mb-3 mt-3 mensajeExito">
+
+
+                <form id="form_modif"  th:if="${session.usuariosession != null}" th:action="@{/perfil/__${usuario.id}__}" method="POST" enctype="multipart/form-data">
+                    <div class="tit">
+                        <h4>Modificar Usuario</h4>    
+                        <input hidden th:value="${id}" name="id">
+                    </div>
+                    <div th:if="${exito} != null" class=" card text-white bg-success mb-3 mt-3 mensajeExito">
                         <div class="card-body">
                             <h5 class="card-title">¡Exito!</h5>
                             <p class="card-text" th:text="${exito}"></p>
@@ -21,13 +28,6 @@
                             <p class="card-text" th:text="${error}"></p>
                         </div>
                     </div>
-
-                <form id="form_modif" th:action="@{/admin/modificarUsuario/__${usuario.id}__}" method="POST">
-                    <div class="tit">
-                        <h4>Modificar Usuario</h4>    
-                        <input hidden th:value="${id}" name="id">
-                    </div>
-
                     <div class="mb-3">
                         <label for="exampleTitulo" class="form-label">Modificar Nombre</label>
                         <input th:value="${usuario.nombre}" type="text" class="form-control" name="nombre" id="fonts"></input>
@@ -36,6 +36,32 @@
                         <label for="exampleTitulo" class="form-label">Modificar Email</label>
                         <input th:value="${usuario.email}" type="email" class="form-control" name="email" id="fonts"></input>
                     </div>
+
+                    <div class="mb-3">
+                        <a class="d-flex align-items-center">
+                            <img id="imagenPerfil" class="logo" th:src="@{/imagen/perfil/__${usuario.id}__}" />
+                        </a>
+                        <p>¡Actualice su foto aquí!</p>
+                        <input type="file" class="form-control" name="archivo" id="archivoInput" />
+                    </div>
+
+                    <script>
+                        const archivoInput = document.getElementById('archivoInput');
+                        const imagenPerfil = document.getElementById('imagenPerfil');
+
+                        archivoInput.addEventListener('change', function () {
+                            if (archivoInput.files && archivoInput.files[0]) {
+                                const reader = new FileReader();
+                                reader.onload = function (e) {
+                                    imagenPerfil.src = e.target.result;
+                                };
+                                reader.readAsDataURL(archivoInput.files[0]);
+                            } else {
+                                // No se seleccionó ningún archivo, se mantiene la imagen actual
+                            }
+                        });
+                    </script>
+
                     <div class="mb-3">
                         <label for="exampleTitulo" class="form-label">Modificar Contraseña</label>
                         <input th:value="${usuario.password}" type="password" class="form-control" name="password" id="fonts"></input>
@@ -44,33 +70,40 @@
                         <label for="exampleTitulo" class="form-label">Repita la nueva Contraseña</label>
                         <input  type="password" class="form-control" name="password2" id="fonts"></input>
                     </div>
-                    <select class="form-select" name="rol" onchange="mostrarInput(this.value)">
-                        <option th:text = "${usuario.rol}"></option>
-                        <option th:each="role : ${roles}" th:value="${role}" th:text="${role}"></option>
-                    </select>                              
-                    <div id="inputSueldo" style="display: none;">
-                        <!-- Contenido específico para la opción 'USER' -->
-                        <input type="text" class="form-control" name="sueldo" placeholder="Ingrese Sueldo" th:value="${sueldo}">
+
+                    <div  class="mb-3">
+                        <input hidden th:value="${usuario.rol}" name="rol">
                     </div>
-                    <script th:inline="javascript">
-                        function mostrarInput(rol) {
-                            var inputSueldo = document.getElementById('inputSueldo');
+
+                    <div sec:authorize="hasRole('ADMIN')" class="mb-3">
+                        <select class="form-select" name="rol" th:value="${role}" onchange="mostrarInput(this.value)">
+                            <option th:text = "${usuario.rol}"></option>
+                            <option th:each="role : ${roles}" th:value="${role}" th:text="${role}"></option>
+                        </select>                              
+                        <div id="inputSueldo" style="display: none;">
+                            <!-- Contenido específico para la opción 'USER' -->
+                            <input type="text" class="form-control" name="sueldo" placeholder="Ingrese Sueldo" th:value="${sueldo}">
+                        </div>
+                        <script th:inline="javascript">
+                            function mostrarInput(rol) {
+                                var inputSueldo = document.getElementById('inputSueldo');
 
 
-                            if (rol != 'JOURNALIST') {
-                                inputSueldo.style.display = 'none';
+                                if (rol != 'JOURNALIST') {
+                                    inputSueldo.style.display = 'none';
 
-                            } else {
-                                inputSueldo.style.display = 'block';
+                                } else {
+                                    inputSueldo.style.display = 'block';
+                                }
                             }
-                        }
-                    </script>
+                        </script>
+                    </div>
 
-                    
                     <button type="submit" class="btn btn-warning">Modificar Usuario</button>
 
                     <div class="volver">
-                        <a class="btn btn-warning me-md-2" th:href="@{/admin/listarUsuarios}" type="button">Volver</a>
+                        <a sec:authorize="hasRole('ADMIN')"class="btn btn-warning me-md-2" th:href="@{/admin/listarUsuarios}" type="button">Volver</a>
+                        <a sec:authorize="hasAnyRole('USER','JOURNALIST')"class="btn btn-warning me-md-2" th:href="@{/news}" type="button">Volver</a>
 
                     </div>
                 </form>

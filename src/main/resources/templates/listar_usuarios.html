@@ -9,12 +9,24 @@
     <body class="pag">   
         <nav th:replace= "/fragments/navbar :: nav"></nav>
         <div class="pagina">
-
+             <div th:if="${error} != null" class=" card text-white bg-danger mb-3 mensajeError">
+                            <div class="card-body">
+                                <h5 class="card-title">¡Error!</h5>
+                                <p class="card-text" th:text="${error}"></p>
+                            </div>
+                        </div>
+                        <div th:if="${exito} != null" class=" card text-white bg-success mb-3 mt-3 mensajeExito">
+                            <div class="card-body">
+                                <h5 class="card-title">¡Exito!</h5>
+                                <p class="card-text" th:text="${exito}"></p>
+                            </div>
+                        </div>
             <div  id="contenido">       
                 <div >
-                    <table id="tabla_lista" class="table table-Light table-striped">
+                    <table  th:if="${session.usuariosession != null}" id="tabla_lista" class="table table-Light table-striped">
                         <thead>
                             <tr>
+                                 <th scope="col" class="titulo" ></th>
                                 <th scope="col" class="titulo" >Usuario</th>
 
                                 <th scope="col" class="titulo" >Rol</th>
@@ -25,6 +37,7 @@
                         </thead>
                         <tbody th:each="usuario : ${usuarios}">
                             <tr>
+                                <th > <img  class="imagenlogo"  th:src="@{/imagen/perfil/__${usuario.id}__}" ></th>
                                 <th th:text="${usuario.nombre}"></th>
                                 <th th:text="${usuario.rol}"></th>
                                 <td id="botes">
@@ -41,18 +54,7 @@
                             </tr>
 
                         </tbody>
-                        <div th:if="${error} != null" class=" card text-white bg-danger mb-3 mensajeError">
-                            <div class="card-body">
-                                <h5 class="card-title">¡Error!</h5>
-                                <p class="card-text" th:text="${error}"></p>
-                            </div>
-                        </div>
-                        <div th:if="${exito} != null" class=" card text-white bg-success mb-3 mt-3 mensajeExito">
-                            <div class="card-body">
-                                <h5 class="card-title">¡Exito!</h5>
-                                <p class="card-text" th:text="${exito}"></p>
-                            </div>
-                        </div>
+                       
                     </table>
 
 

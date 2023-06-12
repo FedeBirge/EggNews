@@ -19,7 +19,7 @@
 
         <div id="contenido">
 
-            <form class="formulario" th:action="@{/admin/crearUser}" method="POST">
+            <form class="formulario"  th:if="${session.usuariosession != null}" th:action="@{/admin/crearUser}" method="POST" enctype="multipart/form-data">
                 <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError" >
                     <div class="card-body">
                         <h5 class="card-title">Error!</h5>
@@ -42,7 +42,10 @@
                 <div class="form-group my-3">
                     <input type="email" class="form-control" name="email" placeholder="EMAIL" th:value="${email}">
                 </div>
-
+                   <div class="form-group my-3">
+                            <p>¡Sube una foto Aquí!</p>
+                            <input type="file" class="form-control" name="archivo" >
+                        </div>
                 <div class="form-group my-3">
                     <input type="password" class="form-control" name="password" placeholder="CONTRASEÑA" th:value="${password}">
                 </div>

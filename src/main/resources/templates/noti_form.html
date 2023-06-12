@@ -17,7 +17,7 @@
         <div class="pagina">
 
             <div  id="contenido">
-                <form th:action="@{/noticia/registro}" method="POST">
+                <form  th:if="${session.usuariosession != null}" th:action="@{/noticia/registro}" method="POST">
                     <input hidden th:value="${session.usuariosession}" name="creador">
                     <div class="tit">
                         <h4>Nueva Noticia</h4>

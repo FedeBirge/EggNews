@@ -19,7 +19,7 @@
 
         <div class="pagina">
             <div  id="contenido">
-                <div class="noticia">
+                <div  th:if="${session.usuariosession != null}" class="noticia">
 
                     <div class="titulo">
                         <h5 th:text="${titulo}"></h5>

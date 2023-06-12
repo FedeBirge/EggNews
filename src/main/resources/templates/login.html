@@ -40,7 +40,7 @@
 
         <div class="pagina">
             <div  id="contenido">
-                <form class="formulario" th:action="@{/logincheck}" method="POST">
+                <form class="formulariologin" th:action="@{/logincheck}" method="POST" >
                     <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError" >
                         <div class="card-body">
                             <h5 class="card-title">Error!</h5>

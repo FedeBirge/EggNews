@@ -4,12 +4,15 @@
  */
 package com.egg.eggNews.servicios;
 
+import com.egg.eggNews.entidades.Imagen;
 import com.egg.eggNews.entidades.Usuario;
 import com.egg.eggNews.enumeraciones.Rol;
 import com.egg.eggNews.excepciones.MyException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import com.egg.eggNews.repositorios.UsuarioRepositorio;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +29,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -37,10 +41,15 @@ public class UsuarioService implements UserDetailsService {
 
     @Autowired
     private UsuarioRepositorio usuarioRepo;
+    @Autowired
+    ImagenService imagenServ;
 
     @Transactional
-    public void registrarUsuario(String nombre, String email, String password, String password2, String rol) throws MyException {
+    public void registrarUsuario(MultipartFile archivo, String nombre, String email, String password, String password2, String rol) throws MyException {
         validar(nombre, email, password, password2, rol);
+        if(usuarioRepo.buscarPorEmail(email)!=null){
+             throw new MyException("EL mail ingresado ya existe! Ingreso otro!");
+        }
         Usuario usuario = new Usuario();
         usuario.setNombre(nombre);
         usuario.setEmail(email);
@@ -52,20 +61,26 @@ public class UsuarioService implements UserDetailsService {
         } else {
             usuario.setRol(Rol.USER);
         }
+        Imagen imagen = imagenServ.guardar(archivo);
+
+        usuario.setImagen(imagen);
         usuarioRepo.save(usuario);
 
     }
 
     @Transactional
-    public void modificarUsuario(String id, String nombre, String email, String password, String password2, String rol) throws MyException {
+    public void modificarUsuario(MultipartFile archivo, String id, String nombre, String email, String password, String password2, String rol) throws MyException, IOException {
         validar(nombre, email, password, password2, rol);
         Optional<Usuario> respuesta = usuarioRepo.findById(id);
         if (respuesta.isPresent()) {
             Usuario usuario = respuesta.get();
+              if(!usuarioRepo.buscarPorEmail(email).getId().equals(usuario.getId())){
+                  throw new MyException("EL mail ingresado ya existe en otro ususario! Ingreso otro!");
+        }
             usuario.setNombre(nombre);
             usuario.setEmail(email);
             usuario.setPassword(new BCryptPasswordEncoder().encode(password));
-            
+
             usuario.setActivo(true);
             if (rol.equals("ADMIN")) {
                 usuario.setRol(Rol.ADMIN);
@@ -76,13 +91,20 @@ public class UsuarioService implements UserDetailsService {
             if (rol.equals("JOURNALIST")) {
                 usuario.setRol(Rol.JOURNALIST);
             }
-            
-                 usuarioRepo.save(usuario);
+            String idImg = null;
+            if (usuario.getImagen() != null) {
+                idImg = usuario.getImagen().getId();
             }
-           
+            if (archivo.getBytes().length != 0 ) {
+                Imagen imagen = imagenServ.actualizar(archivo, idImg);
+                usuario.setImagen(imagen);
+            }
+
+            usuarioRepo.save(usuario);
         }
 
- 
+    }
+
     public Usuario getOne(String id) {
         return usuarioRepo.getOne(id);
     }
@@ -103,9 +125,7 @@ public class UsuarioService implements UserDetailsService {
         if (!password.equals(password2)) {
             throw new MyException("Las contraseñas no coinciden");
         }
-        if (usuarioRepo.buscarPorEmail(email) != null) {
-            throw new MyException("Ya existe un usuario con ese email");
-        }
+
         if (rol == null || rol.isEmpty() || rol.equals("Seleccione Rol")) {
             throw new MyException("Debe ingresar un rol");
         }
@@ -113,16 +133,35 @@ public class UsuarioService implements UserDetailsService {
     }
 
     public List<Usuario> listarUsuarios() {
-        List<Usuario> usuarios = new ArrayList();
-        usuarios = usuarioRepo.findAll();
 
+        List<Usuario> aux = new ArrayList();
+        List<Usuario> usuarios = new ArrayList();
+        aux = usuarioRepo.findAll();
+        for (Usuario usuario : aux) {
+            if (usuario.getActivo().equals(Boolean.TRUE)) {
+                usuarios.add(usuario);
+            }
+
+        }
         return usuarios;
+    }
+
+    @Transactional
+    public void eliminarUsuario(String id) {
+        Optional<Usuario> resp = usuarioRepo.findById(id);
+        if (resp.isPresent()) {
+            Usuario user = (Usuario) (resp.get());
+            user.setActivo(Boolean.FALSE);
+            usuarioRepo.save(user);
+        }
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepo.buscarPorEmail(email);
-        if (usuario != null) {
+        //if activo==FALSE
+        if (usuario != null && usuario.getActivo().equals(Boolean.TRUE)) {
+
             List<GrantedAuthority> permisos = new ArrayList();
             GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().toString());
             permisos.add(p);

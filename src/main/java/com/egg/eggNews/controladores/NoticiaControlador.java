@@ -36,8 +36,7 @@ public class NoticiaControlador {
 
     @GetMapping("/registrar") //localhost:8080/panel/noticia/registrar
     public String cargar(ModelMap modelo) {
-        List<Usuario> usuarios = userServ.listarUsuarios();
-
+        List<Usuario> usuarios = userServ.listarUsuarios();      
         modelo.addAttribute("usuarios", usuarios);
         return "noti_form.html";
     }
@@ -53,17 +52,12 @@ public class NoticiaControlador {
             modelo.put("exito", "Noticia cargada con exito!");
             List<Noticia> noticias = notiServ.listarNoticias();
             modelo.addAttribute("noticias", noticias);
-            return "noti_form.html";
+             return "listar_noticias.html";
         } catch (MyException ex) {
             modelo.put("error", ex.getMessage());
             List<Noticia> noticias = notiServ.listarNoticias();
             modelo.addAttribute("noticias", noticias);
-            List<Usuario> usuarios = userServ.listarUsuarios();
-            for (Usuario usuario : usuarios) {
-                if (usuario.getRol() == Rol.USER) {
-                    usuarios.remove(usuario);
-                }
-            }
+            List<Usuario> usuarios = userServ.listarUsuarios();           
             modelo.addAttribute("usuarios", usuarios);
             return "noti_form.html";
         }
@@ -113,14 +107,14 @@ public class NoticiaControlador {
             modelo.put("exito", "!Noticia modificada con exito!");
             List<Noticia> noticias = notiServ.listarNoticias();
             modelo.addAttribute("noticias", noticias);
-            return this.modificar(id, modelo);
+             return "listar_noticias.html";
         } catch (MyException ex) {
             modelo.put("error", ex.getMessage());
             List<Noticia> noticias = notiServ.listarNoticias();
             List<Usuario> usuarios = userServ.listarUsuarios();
             modelo.addAttribute("usuarios", usuarios);
             modelo.addAttribute("noticias", noticias);
-            return this.modificar(id, modelo);
+               return "modificar.html";
         }
 
     }

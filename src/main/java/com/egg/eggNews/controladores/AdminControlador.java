@@ -7,8 +7,10 @@ import com.egg.eggNews.excepciones.MyException;
 import com.egg.eggNews.servicios.NoticiaService;
 import com.egg.eggNews.servicios.PeriodistaService;
 import com.egg.eggNews.servicios.UsuarioService;
+import java.io.IOException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +18,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
  * @author feder
  */
 @Controller
+ @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminControlador {
 
@@ -49,7 +53,7 @@ public class AdminControlador {
         return "news.html";
     }
 
-    @GetMapping("/eliminar/{id}")
+    @GetMapping("/eliminar_noti/{id}")
     public String eliminar(@PathVariable("id") String id, ModelMap modelo) {
 
         try {
@@ -62,7 +66,7 @@ public class AdminControlador {
 
     }
 
-    @PostMapping("/eliminar/{id}")
+    @PostMapping("/eliminar_noti/{id}")
     public String eliminar1(@PathVariable("id") String id, ModelMap modelo) {
 
         try {
@@ -81,32 +85,65 @@ public class AdminControlador {
 
     }
 
+    @GetMapping("/eliminar/{id}")
+    public String eliminarU(@PathVariable("id") String id, ModelMap modelo) {
+
+        try {
+            modelo.put("exito", "Usuario eliminado con exito!");
+
+            return "redirect:/admin/listarUsuarios";
+        } catch (Exception ex) {
+            modelo.put("error", ex.getMessage());
+            return "redirect:/admin/listarUsusarios";
+        }
+
+    }
+
+    @PostMapping("/eliminar/{id}")
+    public String eliminarUser(@PathVariable("id") String id, ModelMap modelo) {
+
+        try {
+            userServ.eliminarUsuario(id);
+            List<Usuario> usuarios = userServ.listarUsuarios();
+            modelo.addAttribute("usuarios", usuarios);
+            modelo.put("exito", "Usuario eliminado con exito!");
+
+            return "listar_usuarios.html";
+        } catch (Exception ex) {
+            modelo.put("error", ex.getMessage());
+            return "redirect:/admin/listarUsusarios";
+        }
+
+    }
+
     @GetMapping("/crearUsuario")
     public String crearUsusario(ModelMap modelo) {
         Rol[] roles = Rol.values();
         modelo.addAttribute("roles", roles);
-        return "adminRegistro.html";
+        return "registro.html";
     }
 
     @PostMapping("/crearUser")
-    public String crearUsuario(@RequestParam String nombre, @RequestParam String email,
+    public String crearUsuario( MultipartFile archivo, @RequestParam String nombre, @RequestParam String email,
             @RequestParam String password, @RequestParam String password2, @RequestParam String rol, @RequestParam String sueldo, ModelMap modelo) {
         try {
-
+            Rol[] roles = Rol.values();
+            modelo.addAttribute("roles", roles);
             if (rol.equals("JOURNALIST")) {
-                periodistaServ.registrarPeriodista(nombre, email, password, password2, sueldo, rol);
+                periodistaServ.registrarPeriodista(archivo, nombre, email, password, password2, sueldo, rol);
 
             } else {
-                periodistaServ.registrarUsuario(nombre, email, password, password2, rol);
+                periodistaServ.registrarUsuario(archivo,nombre, email, password, password2, rol);
 
             }
             modelo.put("exito", "!Usuario registrado con exito!");
-            return "adminRegistro.html";
+            return "registro.html";
 
         } catch (MyException ex) {
-
+            Rol[] roles = Rol.values();
+            modelo.addAttribute("roles", roles);
             modelo.put("error", ex.getMessage());
-            return crearUsusario(modelo);
+            return "registro.html";
         }
 
     }
@@ -132,9 +169,11 @@ public class AdminControlador {
             modelo.addAttribute("roles", roles);
             modelo.put("usuario", userServ.getOne(id));
             modelo.addAttribute("id", notiServ.getOne(id).getId());
-       
+
             return "modificar_user.html";
         } catch (Exception ex) {
+            Rol[] roles = Rol.values();
+            modelo.addAttribute("roles", roles);
             modelo.put("error", ex.getMessage());
             return "modificar_user.html";
         }
@@ -142,17 +181,27 @@ public class AdminControlador {
     }
 
     @PostMapping("/modificarUsuario/{id}")
-    public String modificarUsusarios(@PathVariable("id") String id, @RequestParam String nombre, @RequestParam String email,
-            @RequestParam String password, @RequestParam String password2, @RequestParam String rol, @RequestParam String sueldo, ModelMap modelo) {
+    public String modificarUsusarios(@PathVariable("id") String id, @RequestParam MultipartFile archivo, @RequestParam String nombre, @RequestParam String email,
+            @RequestParam String password, @RequestParam String password2, @RequestParam String rol, @RequestParam String sueldo, ModelMap modelo) throws IOException {
 
         try {
+            Rol[] roles = Rol.values();
+            modelo.addAttribute("roles", roles);
             modelo.put("usuario", userServ.getOne(id));
             modelo.addAttribute("id", notiServ.getOne(id).getId());
-            userServ.modificarUsuario(id, nombre, email, password, password2, rol);
-         
-             modelo.put("exito", "!Usuario modificado con exito!");
-            return "modificar_user.html";
+          
+            userServ.modificarUsuario(archivo, id, nombre, email, password, password2, rol);
+
+            modelo.put("exito", "!Usuario modificado con exito!");
+            List<Usuario> usuarios = userServ.listarUsuarios();
+            modelo.put("usuarios", usuarios);
+            return "listar_usuarios.html";
         } catch (MyException ex) {
+            Rol[] roles = Rol.values();
+            modelo.addAttribute("roles", roles);
+             modelo.put("usuario", userServ.getOne(id));
+            modelo.addAttribute("id", notiServ.getOne(id).getId());
+          
             modelo.put("error", ex.getMessage());
             return "modificar_user.html";
         }

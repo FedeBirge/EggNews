@@ -12,7 +12,7 @@
 
             <div  id="contenido">       
                 <div >
-                    <table id="tabla_lista" class="table table-Light table-striped">
+                    <table  th:if="${session.usuariosession != null}" id="tabla_lista" class="table table-Light table-striped">
                         <thead>
                             <tr>
                                 <th scope="col" class="titulo" >Titular Noticia</th>
@@ -31,8 +31,8 @@
                                 </td> 
 
                                 <td>
-                                    <form th:action="@{/admin/eliminar/__${noticia.id}__}" method="POST"> 
-                                        <button sec:authorize="hasRole('ADMIN')" class="btn btn-warning me-md-2"  type="summit">Eliminar</button></td>
+                                    <form th:action="@{/admin/eliminar_noti/__${noticia.id}__}" method="POST"> 
+                                        <button sec:authorize="hasRole('ADMIN')" class="btn btn-warning me-md-2"  type="submit">Eliminar</button></td>
                                 </form>
                             </tr>
 

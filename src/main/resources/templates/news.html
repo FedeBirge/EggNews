@@ -22,7 +22,7 @@
                 </div>
 
 
-                <div class="cont">
+                <div  th:if="${session.usuariosession != null}" class="cont">
                     <div class="card" th:each="noticia:${noticias}" style="width: 18rem;">
                         <div class="card-body">
                             <p class="card-text" th:text="${noticia.fecha}"></p>
@@ -30,7 +30,7 @@
 
                             <a th:if = "@{session.usuariosession} != null" th:href ="@{/noticia/mostrar/__${noticia.id}__}" class="btn btn-warning">Leer</a>
                             <a type="button" sec:authorize="hasAnyRole('ADMIN','JOURNALIST')" th:href ="@{/noticia/modificar/__${noticia.id}__}" class="btn btn-warning me-md-2"  >Modificar</a>
-                            <form th:action="@{/admin/eliminar/__${noticia.id}__}" method="POST"> 
+                            <form th:action="@{/admin/eliminar_noti/__${noticia.id}__}" method="POST"> 
                                 <button sec:authorize="hasRole('ADMIN')" class="btn btn-warning me-md-2"  type="summit">Eliminar</button></td>
                             </form>
                         </div>
